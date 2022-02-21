@@ -1,9 +1,12 @@
 <template>
     <div id="app">
-        <h1 style="align: center">my first vuejs</h1>
-        <span>HelloWorld</span>
-        <br />
-        <span>I'm a student</span>
+        <el-container class="app-pannel">
+            <el-header class="sys-header">webgis平台</el-header>
+            <el-container class="app-contentpannel">
+                <el-aside width="200px">功能菜单</el-aside>
+                <el-main>地图</el-main>
+            </el-container>
+        </el-container>
     </div>
 </template>
 
@@ -22,5 +25,15 @@ body,
     width: 100%;
     height: 100%;
     margin: 0%;
+}
+.app-pannel,
+.app-contentPannel {
+    height: 100%;
+}
+.sys-header {
+    background: #e6a23c;
+    line-height: 60px;
+    color: aliceblue;
+    font-size: 30px;
 }
 </style>
