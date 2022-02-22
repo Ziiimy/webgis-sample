@@ -4,7 +4,7 @@
             <el-header class="sys-header">webgis平台</el-header>
             <el-container class="app-contentpannel">
                 <el-aside class="app-aside" width="200px">菜单</el-aside>
-                <el-main> <MapView /> </el-main>
+                <el-main class="mapviewer"> <MapView /> </el-main>
             </el-container>
         </el-container>
     </div>
@@ -42,5 +42,8 @@ body,
 }
 .app-aside {
     background: #dcdfe6;
+}
+.mapviewer {
+    padding: 5px !important;
 }
 </style>

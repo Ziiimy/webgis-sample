@@ -30,7 +30,10 @@ export default {
                 container: 'map-viewer',
                 map: map,
                 zoom: 10,
+                center: [121.475941, 31.224072],
             });
+
+            view.ui.components = [];
 
             console.log(view);
         },
