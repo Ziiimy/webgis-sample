@@ -42,6 +42,7 @@ body,
 }
 .app-aside {
     background: #dcdfe6;
+    color: #fff;
 }
 .mapviewer {
     padding: 5px !important;
