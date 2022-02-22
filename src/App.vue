@@ -1,9 +1,20 @@
 <template>
     <div id="app">
         <el-container class="app-pannel">
-            <el-header class="sys-header">webgis平台</el-header>
+            <el-header class="sys-header">WebGIS平台</el-header>
             <el-container class="app-contentpannel">
-                <el-aside class="app-aside" width="200px">菜单</el-aside>
+                <el-aside class="app-aside" width="200px">
+                    <el-menu class="app-menu-vertical">
+                        <el-menu-item index="1">
+                            <i class="el-icon-location"></i>
+                            <span slot="title">首页</span>
+                        </el-menu-item>
+                        <el-menu-item index="2">
+                            <i class="el-icon-menu"></i>
+                            <span slot="title">地图</span>
+                        </el-menu-item>
+                    </el-menu>
+                </el-aside>
                 <el-main class="mapviewer"> <MapView /> </el-main>
             </el-container>
         </el-container>
@@ -46,5 +57,9 @@ body,
 }
 .mapviewer {
     padding: 5px !important;
+}
+.app-menu-vertical {
+    width: auto;
+    height: 100%;
 }
 </style>
