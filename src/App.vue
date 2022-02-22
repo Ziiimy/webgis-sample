@@ -3,17 +3,21 @@
         <el-container class="app-pannel">
             <el-header class="sys-header">webgis平台</el-header>
             <el-container class="app-contentpannel">
-                <el-aside width="200px">功能菜单</el-aside>
-                <el-main>地图</el-main>
+                <el-aside class="app-aside" width="200px">菜单</el-aside>
+                <el-main> <MapView /> </el-main>
             </el-container>
         </el-container>
     </div>
 </template>
 
 <script>
+import MapView from './components/MapViewer.vue';
+
 export default {
     name: 'App',
-    components: {},
+    components: {
+        MapView,
+    },
 };
 </script>
 
@@ -35,5 +39,8 @@ body,
     line-height: 60px;
     color: aliceblue;
     font-size: 30px;
+}
+.app-aside {
+    background: #dcdfe6;
 }
 </style>
