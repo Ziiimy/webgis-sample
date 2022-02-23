@@ -12,7 +12,8 @@
     "element-ui": "^2.15.6",
     "esri-loader": "^3.4.0",
     "i": "^0.3.7",
-    "vue": "^2.6.14"
+    "vue": "^2.6.14",
+    "vue-router": "^3.5.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
