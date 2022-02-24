@@ -15,6 +15,7 @@ export default {
     name: 'MapView',
     components: {},
     mounted: function () {
+        console.log(this.$store.state._defaultView);
         this._createMapView();
     },
     methods: {

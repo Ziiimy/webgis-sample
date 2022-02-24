@@ -3,8 +3,8 @@
         <el-container class="app-pannel">
             <el-header class="sys-header">WebGIS平台</el-header>
             <el-container class="app-contentpannel">
-                <el-aside class="app-aside" width="200px">
-                    <el-menu class="app-menu-vertical">
+                <el-aside class="app-aside" width="120px">
+                    <el-menu class="app-menu-vertical" mode="vertical" @select="HandleMenuSelect">
                         <el-menu-item index="1">
                             <i class="el-icon-location"></i>
                             <span slot="title">首页</span>
@@ -15,21 +15,27 @@
                         </el-menu-item>
                     </el-menu>
                 </el-aside>
-                <el-main class="mapviewer"> <MapView /> </el-main>
+                    <el-main class="mapviewer">
+                        <router-view></router-view>
+                    </el-main>
             </el-container>
         </el-container>
     </div>
 </template>
 
 <script>
-import MapView from './components/MapViewer.vue';
 
 export default {
     name: 'App',
     components: {
-        MapView,
     },
-};
+    methods: {
+        HandleMenuSelect(index) {
+            if (index == 1) this.$router.push('/');
+            else if (index == 2) this.$router.push('/map');
+        },
+    }
+}
 </script>
 
 <style>
