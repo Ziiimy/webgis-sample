@@ -1,13 +1,14 @@
 <template>
-    <div class="map-page"><MapView /></div>
+    <div class="map-page"><MapView /><MapTools /></div>
 </template>
 
 <script>
 import MapView from '../components/MapViewer';
+import MapTools from '../components/MapTools.vue';
 
 export default {
     name: 'OneMap',
-    components: { MapView },
+    components: { MapView, MapTools },
 };
 </script>
 

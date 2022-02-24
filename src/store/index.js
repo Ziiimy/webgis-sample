@@ -2,9 +2,10 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 Vue.use(Vuex);
+
 const state = {
 
-    _defaultView: '666',
+    _defaultView: '',
 };
 
 const getters = {
