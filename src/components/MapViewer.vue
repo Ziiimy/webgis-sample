@@ -4,6 +4,8 @@
         <div id="basemap-toggle"></div>
         <div id="basemap-scalebar"></div>
         <div id="basemap-zoom"></div>
+        <div id="search-widget"></div>
+        <div id="basemap-compass"></div>
     </div>
 </template>
 
@@ -25,23 +27,26 @@ export default {
     methods: {
         //创建地图显示控件
         async _createMapView() {
-            const [Map, MapView, Basemap, TileLayer, BasemapToggle, ScaleBar, Zoom] = await loadModules(
-                [
-                    'esri/Map',
-                    'esri/views/MapView',
-                    'esri/Basemap',
-                    'esri/layers/TileLayer',
-                    'esri/widgets/BasemapToggle',
-                    'esri/widgets/ScaleBar',
-                    'esri/widgets/Zoom',
-                ],
-                options,
-            );
+            const [Map, MapView, Basemap, TileLayer, BasemapToggle, ScaleBar, Zoom, Search, Compass] =
+                await loadModules(
+                    [
+                        'esri/Map',
+                        'esri/views/MapView',
+                        'esri/Basemap',
+                        'esri/layers/TileLayer',
+                        'esri/widgets/BasemapToggle',
+                        'esri/widgets/ScaleBar',
+                        'esri/widgets/Zoom',
+                        'esri/widgets/Search',
+                        'esri/widgets/Compass',
+                    ],
+                    options,
+                );
 
             let basemap = new Basemap({
                 baseLayers: [
                     new TileLayer({
-                        url: 'http://map.geoq.cn/arcgis/rest/services/ChinaOnlineCommunity/MapServer?f=jsapi',
+                        url: 'http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetWarm/MapServer',
                         title: 'Basemap',
                     }),
                 ],
@@ -70,16 +75,30 @@ export default {
                 style: 'ruler',
                 unit: 'metric',
             });
+
             mapview.ui.add(scalebar);
             let zoom = new Zoom({
                 view: mapview,
                 container: 'basemap-zoom',
             });
             mapview.ui.add(zoom);
+
+            const searchWidget = new Search({
+                view: mapview,
+                container: 'search-widget',
+            });
+            mapview.ui.add(searchWidget);
+
+            let compass = new Compass({
+                view: mapview,
+                container: 'basemap-compass',
+            });
+            mapview.ui.add(compass);
+
             mapview.ui.components = []; //清空自带地图控件
 
             this.$store.commit('_setDefaultView', mapview);
-            console.log(mapview);
+            console.log(this.$store.getters._getDefaultView);
         },
     },
 };
@@ -105,6 +124,16 @@ export default {
 #basemap-zoom {
     position: absolute;
     bottom: 100px;
+    right: 10px;
+}
+#search-widget {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+#basemap-compass {
+    position: absolute;
+    top: 70px;
     right: 10px;
 }
 </style>
