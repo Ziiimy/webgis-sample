@@ -27,7 +27,7 @@ export default {
     methods: {
         //创建地图显示控件
         async _createMapView() {
-            const [Map, MapView, Basemap, TileLayer, BasemapToggle, ScaleBar, Zoom, Search, Compass] =
+            const [Map, MapView, Basemap, TileLayer, BasemapToggle, ScaleBar, Zoom, Search, Compass, WFSLayer] =
                 await loadModules(
                     [
                         'esri/Map',
@@ -39,6 +39,7 @@ export default {
                         'esri/widgets/Zoom',
                         'esri/widgets/Search',
                         'esri/widgets/Compass',
+                        'esri/layers/WFSLayer',
                     ],
                     options,
                 );
@@ -94,6 +95,16 @@ export default {
                 container: 'basemap-compass',
             });
             mapview.ui.add(compass);
+
+            const wfsLayer = new WFSLayer({
+                url: 'http://localhost:8088/geoserver/geodata/ows?service=WFS',
+                // sublayers:[
+                //   {
+                //     name: 'xxxx'
+                //   }
+                // ]
+            });
+            map.add(wfsLayer);
 
             mapview.ui.components = []; //清空自带地图控件
 
