@@ -27,7 +27,7 @@ export default {
     methods: {
         //创建地图显示控件
         async _createMapView() {
-            const [Map, MapView, Basemap, TileLayer, BasemapToggle, ScaleBar, Zoom, Search, Compass, WFSLayer] =
+            const [Map, MapView, Basemap, TileLayer, BasemapToggle, ScaleBar, Zoom, Search, Compass] =
                 await loadModules(
                     [
                         'esri/Map',
@@ -39,7 +39,6 @@ export default {
                         'esri/widgets/Zoom',
                         'esri/widgets/Search',
                         'esri/widgets/Compass',
-                        'esri/layers/WFSLayer',
                     ],
                     options,
                 );
@@ -63,6 +62,12 @@ export default {
                 map: map,
                 zoom: 10,
                 center: [121.475941, 31.224072],
+                popup: {
+                    defaultPopupTemplateEnabled: true, // popup will be enabled on the wfslayer
+                },
+                spatialReference: {
+                    wkid: 3857,
+                },
             });
             let basemapToggle = new BasemapToggle({
                 view: mapview,
@@ -95,21 +100,10 @@ export default {
                 container: 'basemap-compass',
             });
             mapview.ui.add(compass);
-
-            const wfsLayer = new WFSLayer({
-                url: 'http://localhost:8088/geoserver/geodata/ows?service=WFS',
-                // sublayers:[
-                //   {
-                //     name: 'xxxx'
-                //   }
-                // ]
-            });
-            map.add(wfsLayer);
-
+            map.add(this.$store.getters._getDefaultwfslayer);
             mapview.ui.components = []; //清空自带地图控件
-
             this.$store.commit('_setDefaultView', mapview);
-            console.log(this.$store.getters._getDefaultView);
+            this.$store.commit('_setDefaultMap', map);
         },
     },
 };
@@ -146,5 +140,10 @@ export default {
     position: absolute;
     top: 70px;
     right: 10px;
+}
+.map-navigator {
+    position: absolute;
+    left: 10px;
+    top: 100px;
 }
 </style>

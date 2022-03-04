@@ -6,7 +6,10 @@ Vue.use(Vuex);
 const state = {
 
     _defaultView: '',
-    _defaultTreeStat: false
+    _defaultVNav: false,
+    _defaultTreeStat: false,
+    _defaultwfslayer: '',
+    _setDefaultmap: ""
 };
 
 const getters = {
@@ -16,7 +19,17 @@ const getters = {
     },
     _getDefaultTreeStat() {
         return state._defaultTreeStat;
+    },
+    _getDefaultNav() {
+        return state._defaultNav;
+    },
+    _getDefaultwfslayer() {
+        return state._defaultwfslayer;
+    },
+    _getDefaultMap() {
+        return state._defaultmap;
     }
+
 };
 
 const mutations = {
@@ -26,7 +39,17 @@ const mutations = {
     },
     _setDefaultTreeStat(state, value) {
         state._defaultTreeStat = value;
+    },
+    _setDefaultNav(state, value) {
+        state._defaultNav = value;
+    },
+    _setDefaultwfslayer(state, value) {
+        state._defaultwfslayer = value;
+    },
+    _setDefaultMap(state, value) {
+        state._setDefaultmap = value;
     }
+
 };
 
 const store = new Vuex.Store({
