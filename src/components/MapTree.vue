@@ -18,28 +18,26 @@
 <script>
 import { loadModules } from 'esri-loader';
 
-const options = {
-    //定义一个包含有JS API中js开发包和css样式文件的对象
-    url: 'https://js.arcgis.com/4.22/init.js',
-    css: 'https://js.arcgis.com/4.22/esri/themes/light/main.css',
-};
 export default {
     name: 'MapTree',
     components: {},
     methods: {
         async handleNodeClick(data) {
-            if (data.layerurl) {
-                const mapview = this.$store.getters._getDefaultView;
-                const layerid = mapview.map.findLayerById('layerid');
-                if (layerid) {
-                    mapview.map.remove(layerid);
+            if (data.id > 4 && data.id < 11) {
+                if (data.layerurl) {
+                    const mapview = this.$store.getters._getDefaultView;
+                    const layerid = mapview.map.findLayerById('layerid');
+                    console.log(layerid);
+                    if (layerid) {
+                        mapview.map.remove(layerid);
+                    }
+                    const [TileLayer] = await loadModules(['esri/layers/TileLayer']);
+                    const tilelayer = new TileLayer({
+                        url: data.layerurl,
+                        id: data.LayerId,
+                    });
+                    mapview.map.add(tilelayer);
                 }
-                const [TileLayer] = await loadModules(['esri/layers/TileLayer'], options);
-                const tilelayer = new TileLayer({
-                    url: data.layerurl,
-                    id: data.LayerId,
-                });
-                mapview.map.add(tilelayer);
             }
         },
         filterNode(value, data) {
@@ -65,18 +63,21 @@ export default {
                             label: '业务图层',
                             children: [
                                 {
+                                    id: 5,
                                     LayerId: 'layerid',
                                     label: '行政边界图',
                                     layerurl:
                                         'http://thematic.geoq.cn/arcgis/rest/services/ThematicMaps/administrative_division_boundaryandlabel/MapServer',
                                 },
                                 {
+                                    id: 6,
                                     LayerId: 'layerid',
                                     label: '地铁线路图',
                                     layerurl:
                                         'http://thematic.geoq.cn/arcgis/rest/services/ThematicMaps/subway/MapServer',
                                 },
                                 {
+                                    id: 7,
                                     LayerId: 'layerid',
                                     label: '水系分布图',
                                     layerurl:
@@ -89,18 +90,46 @@ export default {
                             label: '底图图层',
                             children: [
                                 {
+                                    id: 8,
                                     LayerId: 'layerid',
                                     label: '彩色版',
                                     layerurl: 'http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer',
                                 },
                                 {
+                                    id: 9,
                                     LayerId: 'layerid',
                                     label: '灰色版',
                                     layerurl: 'http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetGray/MapServer',
                                 },
                                 {
+                                    id: 10,
                                     LayerId: 'layerid',
                                     label: '蓝黑版',
+                                    layerurl:
+                                        'http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetPurplishBlue/MapServer',
+                                },
+                            ],
+                        },
+                        {
+                            id: 4,
+                            label: '矢量图层',
+                            children: [
+                                {
+                                    id: 11,
+                                    LayerId: 'layerid',
+                                    label: '省级边界',
+                                    layerurl: 'http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer',
+                                },
+                                {
+                                    id: 12,
+                                    LayerId: 'layerid',
+                                    label: '市级边界',
+                                    layerurl: 'http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetGray/MapServer',
+                                },
+                                {
+                                    id: 13,
+                                    LayerId: 'layerid',
+                                    label: '县区边界',
                                     layerurl:
                                         'http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetPurplishBlue/MapServer',
                                 },

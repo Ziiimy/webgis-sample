@@ -18,6 +18,7 @@ export default {
         handleToolsClick(e) {
             switch (e.currentTarget.id) {
                 case 'direct':
+                    this.navSwitch();
                     break;
                 case 'layers':
                     this.treeSwitch();
@@ -36,7 +37,10 @@ export default {
         treeSwitch() {
             let stat = this.$store.getters._getDefaultTreeStat;
             this.$store.commit('_setDefaultTreeStat', !stat);
-            console.log(this.$store.getters._getDefaultTreeStat);
+        },
+        navSwitch() {
+            let stat = this.$store.getters._getDefaultNavStat;
+            this.$store.commit('_setDefaultNavStat', !stat);
         },
     },
 };

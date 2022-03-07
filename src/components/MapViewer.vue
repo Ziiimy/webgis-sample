@@ -100,7 +100,8 @@ export default {
                 container: 'basemap-compass',
             });
             mapview.ui.add(compass);
-            map.add(this.$store.getters._getDefaultwfslayer);
+            map.add(this.$store.getters._getProvincewfslayer);
+            this.$store.getters._getProvincewfslayer.visible = false;
             mapview.ui.components = []; //清空自带地图控件
             this.$store.commit('_setDefaultView', mapview);
             this.$store.commit('_setDefaultMap', map);

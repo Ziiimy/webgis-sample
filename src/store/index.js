@@ -8,8 +8,11 @@ const state = {
     _defaultView: '',
     _defaultVNav: false,
     _defaultTreeStat: false,
-    _defaultwfslayer: '',
-    _setDefaultmap: ""
+    _defaultNavStat: false,
+    _Provincewfslayer: '',
+    _City1wfslayer: '',
+    _City2wfslayer: '',
+    _Defaultmap: ''
 };
 
 const getters = {
@@ -20,14 +23,23 @@ const getters = {
     _getDefaultTreeStat() {
         return state._defaultTreeStat;
     },
+    _getDefaultNavStat() {
+        return state._defaultNavStat;
+    },
     _getDefaultNav() {
         return state._defaultNav;
     },
-    _getDefaultwfslayer() {
-        return state._defaultwfslayer;
+    _getProvincewfslayer() {
+        return state._Provincewfslayer;
+    },
+    _getCity1wfslayer() {
+        return state._City1wfslayer;
+    },
+    _getCity2wfslayer() {
+        return state._City2wfslayer;
     },
     _getDefaultMap() {
-        return state._defaultmap;
+        return state._Defaultmap;
     }
 
 };
@@ -40,14 +52,23 @@ const mutations = {
     _setDefaultTreeStat(state, value) {
         state._defaultTreeStat = value;
     },
+    _setDefaultNavStat(state, value) {
+        state._defaultNavStat = value;
+    },
     _setDefaultNav(state, value) {
         state._defaultNav = value;
     },
-    _setDefaultwfslayer(state, value) {
-        state._defaultwfslayer = value;
+    _setProvincewfslayer(state, value) {
+        state._Provincewfslayer = value;
+    },
+    _setCity1wfslayer(state, value) {
+        state._City1wfslayer = value;
+    },
+    _setCity2wfslayer(state, value) {
+        state._City2wfslayer = value;
     },
     _setDefaultMap(state, value) {
-        state._setDefaultmap = value;
+        state._Defaultmap = value;
     }
 
 };
