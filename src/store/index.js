@@ -6,6 +6,7 @@ Vue.use(Vuex);
 const state = {
 
     _defaultView: '',
+    _defaultView2: '',
     _defaultVNav: false,
     _defaultTreeStat: false,
     _defaultNavStat: false,
@@ -19,6 +20,9 @@ const getters = {
 
     _getDefaultView() {
         return state._defaultView;
+    },
+    _getDefaultView2() {
+        return state._defaultView2;
     },
     _getDefaultTreeStat() {
         return state._defaultTreeStat;
@@ -48,6 +52,9 @@ const mutations = {
 
     _setDefaultView(state, value) {
         state._defaultView = value;
+    },
+    _setDefaultView2(state, value) {
+        state._defaultView2 = value;
     },
     _setDefaultTreeStat(state, value) {
         state._defaultTreeStat = value;

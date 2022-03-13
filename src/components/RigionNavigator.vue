@@ -8,7 +8,7 @@
                 </el-option>
             </el-select>
         </div>
-        <div class="map-navigator-pannel">
+        <div class="map-navigator-pannel" v-loading="loading">
             <tbody>
                 <tr v-for="item in cityOptions" :key="item.label">
                     <td style="min-width: 50px">
@@ -85,6 +85,7 @@ export default {
             query.returnGeometry = false;
             query.outFields = ['*'];
             query.where = "SHI like '" + provinceValue + "%'";
+            _self.loading = true;
             //Promise then 链式调用
             wfsLayer.queryFeatures(query).then((results) => {
                 // do something with the query results
@@ -98,6 +99,7 @@ export default {
                     });
                     _self.cityOptions = currentCityData;
                     console.log(this.cityOptions);
+                    _self.loading = false;
                 } else {
                     _self.$message({
                         message: '暂时没有省份数据',
@@ -155,6 +157,7 @@ export default {
             provinceOptions: [],
             provinceValue: '',
             cityOptions: [],
+            loading: false,
         };
     },
 };
@@ -165,7 +168,7 @@ export default {
     position: absolute;
     left: 10px;
     top: 100px;
-    width: 500px;
+    width: 280px;
     height: 500px;
     background-color: #fff;
     border-radius: 2px;
@@ -202,5 +205,8 @@ export default {
     overflow: auto;
     padding: 0 5px;
     box-sizing: border-box;
+}
+body {
+    margin: 0;
 }
 </style>
