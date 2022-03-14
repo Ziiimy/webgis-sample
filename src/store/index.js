@@ -13,7 +13,8 @@ const state = {
     _Provincewfslayer: '',
     _City1wfslayer: '',
     _City2wfslayer: '',
-    _Defaultmap: ''
+    _Defaultmap: '',
+    _SpaceQueryResult: ''
 };
 
 const getters = {
@@ -44,6 +45,9 @@ const getters = {
     },
     _getDefaultMap() {
         return state._Defaultmap;
+    },
+    _getSpaceQueryResult() {
+        return state._SpaceQueryResult;
     }
 
 };
@@ -76,8 +80,10 @@ const mutations = {
     },
     _setDefaultMap(state, value) {
         state._Defaultmap = value;
+    },
+    _setSpaceQueryResult(state, value) {
+        state._SpaceQueryResult = value;
     }
-
 };
 
 const store = new Vuex.Store({

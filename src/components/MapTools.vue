@@ -65,7 +65,7 @@ export default {
             });
             view.map.add(spaceLayer);
 
-            var svm = new SketchViewModel({
+            var sketchViewModel = new SketchViewModel({
                 updateOnGraphicClick: false,
                 view: view,
                 layer: spaceLayer,
@@ -79,14 +79,145 @@ export default {
                     },
                 },
             });
-            svm.create('polygon');
-            svm.on('create-complete', function (event) {
-                const graphic = new Graphic({
-                    geometry: event.geometry,
-                    symbol: svm.graphic.symbol,
-                });
-                spaceLayer.add(graphic);
+            sketchViewModel.create('polygon');
+            console.log(sketchViewModel);
+            sketchViewModel.on('create', function (event) {
+                //console.log(event);
+                if (event.state === 'complete') {
+                    const graphic = new Graphic({
+                        geometry: event.graphic.geometry,
+                        symbol: sketchViewModel.polygonSymbol,
+                    });
+                    console.log(graphic);
+                    spaceLayer.add(graphic);
+                    //2、执行空间查询
+                    _self.startSpaceQuery(event.graphic);
+                }
             });
+        },
+        startSpaceQuery(graphic) {
+            const _self = this;
+            const view = this.$store.getters._getDefaultView;
+
+            const resLayer = view.map.findLayerById('layerid');
+            if (!resLayer) {
+                _self.$message({
+                    message: '未添加矢量图层，无法进行空间查询',
+                    type: 'warning',
+                });
+                return;
+            }
+            const query = resLayer.createQuery();
+            query.geometry = graphic.geometry;
+            resLayer
+                .queryFeatures(query)
+                .then(function (results) {
+                    let currentData = [];
+                    if (results.features.length > 0) {
+                        //符号化渲染图层
+                        _self.renderResultLayer(results.features);
+                        //实例化表格数据
+                        results.features.map((item, index) => {
+                            currentData.push({
+                                name: item.attributes.车站,
+                                address: item.attributes.地址,
+                                lon: item.attributes.WGS84经度,
+                                lat: item.attributes.WGS84纬度,
+                                key: index,
+                            });
+                        });
+                    } else {
+                        currentData.length = 0;
+                    }
+                    _self.$message({
+                        message: `查询成功，共查到 ${results.features.length} 条数据`,
+                        type: 'success',
+                    });
+                    _self.$store.commit('_setSpaceQueryResult', currentData);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    _self.$message.error('空间查询失败，请联系管理员');
+                });
+        },
+        async renderResultLayer(resFeatures) {
+            const view = this.$store.getters._getDefaultView;
+            const [FeatureLayer] = await loadModules(['esri/layers/FeatureLayer'], options);
+            const resultLayer = view.map.findLayerById('initResultLayer');
+            if (resultLayer) view.map.remove(resultLayer);
+            const resData = this._translateLonLat(resFeatures);
+            //实例化弹窗
+            let template = {
+                title: '{name}',
+                content: [
+                    {
+                        type: 'fields',
+                        fieldInfos: [
+                            {
+                                fieldName: 'name',
+                                label: '站名',
+                            },
+                            {
+                                fieldName: 'address',
+                                label: '地址',
+                            },
+                        ],
+                    },
+                ],
+            };
+            const queryResultLayer = new FeatureLayer({
+                source: resData,
+                id: 'initResultLayer',
+                objectIdField: 'ObjectID',
+                renderer: {
+                    type: 'simple', // autocasts as new SimpleRenderer()
+                    symbol: {
+                        type: 'picture-marker', // autocasts as new PictureMarkerSymbol()
+                        url: `C:/Users/ziiim/Desktop/webgis/webgis-sample/src/assets/logo.png`,
+                        width: '32px',
+                        height: '32px',
+                    },
+                },
+                fields: [
+                    {
+                        name: 'OBJECTID',
+                        type: 'oid',
+                    },
+                    {
+                        name: 'name',
+                        type: 'string',
+                    },
+                    {
+                        name: 'address',
+                        type: 'string',
+                    },
+                ],
+                popupTemplate: template,
+            });
+            view.map.add(queryResultLayer);
+        },
+        _translateLonLat(data) {
+            const _self = this;
+            if (data.length > 0) {
+                _self.geoData = [];
+                data.map((value, key) => {
+                    _self.geoData.push({
+                        geometry: {
+                            type: 'point',
+                            x: Number(value.attributes.lon),
+                            y: Number(value.attributes.lat),
+                        },
+                        attributes: {
+                            ObjectID: key + 1,
+                            name: value.attributes.name,
+                            type: value.attributes.type,
+                            tieluju: value.attributes.tieluju,
+                            address: value.attributes.address,
+                        },
+                    });
+                });
+            }
+            return _self.geoData;
         },
         treeSwitch() {
             let stat = this.$store.getters._getDefaultTreeStat;

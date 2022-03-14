@@ -27,34 +27,23 @@ export default {
     methods: {
         //创建地图显示控件
         async _createMapView() {
-            const [
-                Map,
-                MapView,
-                Basemap,
-                TileLayer,
-                BasemapToggle,
-                ScaleBar,
-                Zoom,
-                Search,
-                Compass,
-                GraphicsLayer,
-                SketchViewModel,
-            ] = await loadModules(
-                [
-                    'esri/Map',
-                    'esri/views/MapView',
-                    'esri/Basemap',
-                    'esri/layers/TileLayer',
-                    'esri/widgets/BasemapToggle',
-                    'esri/widgets/ScaleBar',
-                    'esri/widgets/Zoom',
-                    'esri/widgets/Search',
-                    'esri/widgets/Compass',
-                    'esri/layers/GraphicsLayer',
-                    'esri/widgets/Sketch/SketchViewModel',
-                ],
-                options,
-            );
+            const [Map, MapView, Basemap, TileLayer, BasemapToggle, ScaleBar, Zoom, Search, Compass, SketchViewModel] =
+                await loadModules(
+                    [
+                        'esri/Map',
+                        'esri/views/MapView',
+                        'esri/Basemap',
+                        'esri/layers/TileLayer',
+                        'esri/widgets/BasemapToggle',
+                        'esri/widgets/ScaleBar',
+                        'esri/widgets/Zoom',
+                        'esri/widgets/Search',
+                        'esri/widgets/Compass',
+
+                        'esri/widgets/Sketch/SketchViewModel',
+                    ],
+                    options,
+                );
 
             let basemap = new Basemap({
                 baseLayers: [
@@ -77,9 +66,6 @@ export default {
                 center: [121.475941, 31.224072],
                 popup: {
                     defaultPopupTemplateEnabled: true, // popup will be enabled on the wfslayer
-                },
-                spatialReference: {
-                    wkid: 3857,
                 },
             });
             let basemapToggle = new BasemapToggle({
@@ -112,29 +98,8 @@ export default {
                 view: mapview,
                 container: 'basemap-compass',
             });
-            const spaceLayer = new GraphicsLayer({
-                id: 'polygonGraphicLayer',
-                elevationInfo: {
-                    mode: 'on-the-ground',
-                },
-            });
-            mapview.map.add(spaceLayer);
-
-            var svm = new SketchViewModel({
-                updateOnGraphicClick: false,
-                view: mapview,
-                layer: spaceLayer,
-                polygonSymbol: {
-                    type: 'simple-fill',
-                    color: 'rgba(216,30,6, 0.4)',
-                    style: 'solid',
-                    outline: {
-                        color: '#d81e06',
-                        width: 1,
-                    },
-                },
-            });
-            console.log(svm);
+            var sketchViewModel = new SketchViewModel({});
+            console.log(sketchViewModel);
             mapview.ui.add(compass);
             map.add(this.$store.getters._getProvincewfslayer);
             this.$store.getters._getProvincewfslayer.visible = false;

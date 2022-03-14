@@ -36,6 +36,9 @@ export default {
             const wfsLayer = new WFSLayer({
                 url: 'http://localhost:8088/geoserver/geodata/ows?service=WFS&version=2.0.0&request=GetFeature',
                 name: 'sheng_Project',
+                spatialReference: {
+                    wkid: 3857,
+                },
             });
             this.$store.commit('_setProvincewfslayer', wfsLayer);
             console.log(wfsLayer);
@@ -77,6 +80,9 @@ export default {
             const wfsLayer = new WFSLayer({
                 url: 'http://localhost:8088/geoserver/geodata/ows?service=WFS&version=2.0.0&request=GetFeature',
                 name: 'CNshiA_Dissolve1_Identity',
+                spatialReference: {
+                    wkid: 3857,
+                },
             });
             this.$store.commit('_setCity1wfslayer', wfsLayer);
             console.log(wfsLayer);

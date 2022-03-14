@@ -39,6 +39,23 @@ export default {
                     mapview.map.add(tilelayer);
                 }
             }
+            if (data.id > 10) {
+                if (data.layerurl) {
+                    const mapview = this.$store.getters._getDefaultView;
+                    const layerid = mapview.map.findLayerById('layerid');
+                    console.log(layerid);
+                    if (layerid) {
+                        mapview.map.remove(layerid);
+                    }
+                    const [WFSLayer] = await loadModules(['esri/layers/WFSLayer']);
+                    const wfslayer = new WFSLayer({
+                        url: data.layerurl,
+                        id: data.LayerId,
+                        name: data.name,
+                    });
+                    mapview.map.add(wfslayer);
+                }
+            }
         },
         filterNode(value, data) {
             if (!value) return true;
@@ -117,8 +134,10 @@ export default {
                                 {
                                     id: 11,
                                     LayerId: 'layerid',
-                                    label: '省级边界',
-                                    layerurl: 'http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer',
+                                    label: '2016年高铁站分布',
+                                    layerurl:
+                                        'http://localhost:8088/geoserver/geodata/ows?service=WFS&version=2.0.0&request=GetFeature',
+                                    name: 'station_Project',
                                 },
                                 {
                                     id: 12,
