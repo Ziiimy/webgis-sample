@@ -71,7 +71,7 @@ export default {
                 layer: spaceLayer,
                 polygonSymbol: {
                     type: 'simple-fill',
-                    color: 'rgba(216,30,6, 0.4)',
+                    color: [245, 108, 108, 0.2],
                     style: 'solid',
                     outline: {
                         color: '#d81e06',
@@ -121,8 +121,8 @@ export default {
                             currentData.push({
                                 name: item.attributes.车站,
                                 address: item.attributes.地址,
-                                lon: item.attributes.WGS84经度,
-                                lat: item.attributes.WGS84纬度,
+                                lon: item.attributes.WGS84经,
+                                lat: item.attributes.WGS84纬,
                                 key: index,
                             });
                         });
@@ -134,6 +134,7 @@ export default {
                         type: 'success',
                     });
                     _self.$store.commit('_setSpaceQueryResult', currentData);
+                    _self.$store.commit('_setSpaceQueryVisible', true);
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -144,7 +145,11 @@ export default {
             const view = this.$store.getters._getDefaultView;
             const [FeatureLayer] = await loadModules(['esri/layers/FeatureLayer'], options);
             const resultLayer = view.map.findLayerById('initResultLayer');
-            if (resultLayer) view.map.remove(resultLayer);
+            console.log(resultLayer);
+            if (resultLayer) {
+                view.map.remove(resultLayer);
+                console.log(resultLayer);
+            }
             const resData = this._translateLonLat(resFeatures);
             //实例化弹窗
             let template = {
@@ -173,14 +178,14 @@ export default {
                     type: 'simple', // autocasts as new SimpleRenderer()
                     symbol: {
                         type: 'picture-marker', // autocasts as new PictureMarkerSymbol()
-                        url: `C:/Users/ziiim/Desktop/webgis/webgis-sample/src/assets/logo.png`,
+                        url: `/icon/火车站.png`,
                         width: '32px',
                         height: '32px',
                     },
                 },
                 fields: [
                     {
-                        name: 'OBJECTID',
+                        name: 'ObjectID',
                         type: 'oid',
                     },
                     {
@@ -197,6 +202,7 @@ export default {
             view.map.add(queryResultLayer);
         },
         _translateLonLat(data) {
+            console.log(data);
             const _self = this;
             if (data.length > 0) {
                 _self.geoData = [];
@@ -204,19 +210,18 @@ export default {
                     _self.geoData.push({
                         geometry: {
                             type: 'point',
-                            x: Number(value.attributes.lon),
-                            y: Number(value.attributes.lat),
+                            x: Number(value.geometry.longitude),
+                            y: Number(value.geometry.latitude),
                         },
                         attributes: {
                             ObjectID: key + 1,
-                            name: value.attributes.name,
-                            type: value.attributes.type,
-                            tieluju: value.attributes.tieluju,
-                            address: value.attributes.address,
+                            name: value.attributes.车站,
+                            address: value.attributes.地址,
                         },
                     });
                 });
             }
+            console.log(_self.geoData);
             return _self.geoData;
         },
         treeSwitch() {

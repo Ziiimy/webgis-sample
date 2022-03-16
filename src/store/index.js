@@ -14,7 +14,8 @@ const state = {
     _City1wfslayer: '',
     _City2wfslayer: '',
     _Defaultmap: '',
-    _SpaceQueryResult: ''
+    _SpaceQueryResult: [],
+    _SpaceQueryVisible: ''
 };
 
 const getters = {
@@ -48,6 +49,9 @@ const getters = {
     },
     _getSpaceQueryResult() {
         return state._SpaceQueryResult;
+    },
+    _getSpaceQueryVisible() {
+        return state._SpaceQueryVisible;
     }
 
 };
@@ -83,6 +87,9 @@ const mutations = {
     },
     _setSpaceQueryResult(state, value) {
         state._SpaceQueryResult = value;
+    },
+    _setSpaceQueryVisible(state, value) {
+        state._SpaceQueryVisible = value;
     }
 };
 

@@ -39,7 +39,6 @@ export default {
                         'esri/widgets/Zoom',
                         'esri/widgets/Search',
                         'esri/widgets/Compass',
-
                         'esri/widgets/Sketch/SketchViewModel',
                     ],
                     options,
@@ -48,13 +47,14 @@ export default {
             let basemap = new Basemap({
                 baseLayers: [
                     new TileLayer({
-                        url: 'http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetWarm/MapServer',
+                        url: 'http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer',
                         title: 'Basemap',
                     }),
                 ],
                 title: 'basemap',
                 id: 'basemap',
             });
+            console.log(basemap);
             const map = new Map({
                 basemap,
             });

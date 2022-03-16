@@ -36,9 +36,6 @@ export default {
             const wfsLayer = new WFSLayer({
                 url: 'http://localhost:8088/geoserver/geodata/ows?service=WFS&version=2.0.0&request=GetFeature',
                 name: 'sheng_Project',
-                spatialReference: {
-                    wkid: 3857,
-                },
             });
             this.$store.commit('_setProvincewfslayer', wfsLayer);
             console.log(wfsLayer);

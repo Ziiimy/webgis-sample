@@ -109,8 +109,8 @@ export default {
                                 {
                                     id: 8,
                                     LayerId: 'layerid',
-                                    label: '彩色版',
-                                    layerurl: 'http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer',
+                                    label: '暖色版',
+                                    layerurl: 'http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetWarm/MapServer',
                                 },
                                 {
                                     id: 9,
@@ -137,7 +137,7 @@ export default {
                                     label: '2016年高铁站分布',
                                     layerurl:
                                         'http://localhost:8088/geoserver/geodata/ows?service=WFS&version=2.0.0&request=GetFeature',
-                                    name: 'station_Project',
+                                    name: 'station_Project2',
                                 },
                                 {
                                     id: 12,
