@@ -1,14 +1,14 @@
 <template>
     <div class="space-query" v-show="this.$store.getters._getSpaceQueryVisible">
-        <el-collapse v-model="activeNames" @change="handleChange">
+        <el-collapse @change="handleChange">
             <div>
                 <div class="space-query-header">
                     <span>查询结果</span>
-                    <i class="el-icon-minus" @click="show3 = !show3"></i>
+                    <i class="el-icon-minus" @click="show = !show"></i>
                     <i class="el-icon-close" @click="closeQueryTable"></i>
                 </div>
-                <el-collapse-transition
-                    ><div v-show="show3">
+                <el-collapse-transition>
+                    <div v-show="show">
                         <el-table
                             :data="this.$store.getters._getSpaceQueryResult"
                             style="width: 550px"
@@ -41,9 +41,11 @@ export default {
             console.log(val);
         },
     },
-    data: () => ({
-        show3: true,
-    }),
+    data() {
+        return {
+            show: true,
+        };
+    },
 };
 </script>
 

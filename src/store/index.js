@@ -15,7 +15,9 @@ const state = {
     _City2wfslayer: '',
     _Defaultmap: '',
     _SpaceQueryResult: [],
-    _SpaceQueryVisible: ''
+    _SpaceQueryVisible: '',
+    _CompareMapview1: '',
+    _CompareMapview2: ''
 };
 
 const getters = {
@@ -52,6 +54,12 @@ const getters = {
     },
     _getSpaceQueryVisible() {
         return state._SpaceQueryVisible;
+    },
+    _getCompareMapview1() {
+        return state._CompareMapview1;
+    },
+    _getCompareMapview2() {
+        return state._CompareMapview2;
     }
 
 };
@@ -90,6 +98,12 @@ const mutations = {
     },
     _setSpaceQueryVisible(state, value) {
         state._SpaceQueryVisible = value;
+    },
+    _setCompareMapview1(state, value) {
+        state._CompareMapview1 = value;
+    },
+    _setCompareMapview2(state, value) {
+        state._CompareMapview2 = value;
     }
 };
 

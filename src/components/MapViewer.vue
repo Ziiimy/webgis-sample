@@ -48,7 +48,6 @@ export default {
                 baseLayers: [
                     new TileLayer({
                         url: 'http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer',
-                        title: 'Basemap',
                     }),
                 ],
                 title: 'basemap',

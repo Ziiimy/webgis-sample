@@ -13,29 +13,44 @@
                             <i class="el-icon-menu"></i>
                             <span slot="title">地图</span>
                         </el-menu-item>
+                        <el-menu-item index="3">
+                            <i class="el-icon-copy-document"></i>
+                            <span slot="title">地图对比</span>
+                        </el-menu-item>
                     </el-menu>
                 </el-aside>
-                    <el-main class="mapviewer">
-                        <router-view></router-view>
-                    </el-main>
+                <el-main class="mapviewer">
+                    <router-view></router-view>
+                </el-main>
             </el-container>
         </el-container>
     </div>
 </template>
 
 <script>
-
 export default {
     name: 'App',
-    components: {
-    },
+    components: {},
     methods: {
         HandleMenuSelect(index) {
-            if (index == 1) this.$router.push('/');
-            else if (index == 2) this.$router.push('/map');
+            //if (index == 1) this.$router.push('/');
+            //else if (index == 2) this.$router.push('/map');
+            switch (index) {
+                case '1':
+                    this.$router.push('/');
+                    break;
+                case '2':
+                    this.$router.push('/map');
+                    break;
+                case '3':
+                    this.$router.push('/mapcompare');
+                    break;
+                default:
+                    break;
+            }
         },
-    }
-}
+    },
+};
 </script>
 
 <style>
