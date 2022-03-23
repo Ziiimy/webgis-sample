@@ -114,7 +114,8 @@ export default {
             this.$store.commit('_setCompareMapview2', mapview2);
             mapview1.ui.components = [];
             mapview2.ui.components = [];
-            watchUtils.whenTrue(mapview1, 'stationary', function () {
+            console.log(mapview1);
+            watchUtils.watch(mapview1, 'center', function () {
                 // Get the new center of the view only when view is stationary.
                 if (mapview1.center) {
                     mapview2.goTo({
@@ -166,7 +167,7 @@ export default {
     width: 80px;
     height: 35px;
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 500;
     color: #909399;
     border-bottom: 1px solid #fff;
     padding: 0 5px;

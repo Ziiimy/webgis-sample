@@ -17,7 +17,9 @@ const state = {
     _SpaceQueryResult: [],
     _SpaceQueryVisible: '',
     _CompareMapview1: '',
-    _CompareMapview2: ''
+    _CompareMapview2: '',
+    _SwipePannelVisible: '',
+    _SwipeButtonSwitch: false
 };
 
 const getters = {
@@ -60,6 +62,12 @@ const getters = {
     },
     _getCompareMapview2() {
         return state._CompareMapview2;
+    },
+    _getSwipePannelVisible() {
+        return state._SwipePannelVisible;
+    },
+    _getSwipeButtonSwitch() {
+        return state._SwipeButtonSwitch;
     }
 
 };
@@ -104,6 +112,12 @@ const mutations = {
     },
     _setCompareMapview2(state, value) {
         state._CompareMapview2 = value;
+    },
+    _setSwipePannelVisible(state, value) {
+        state._SwipePannelVisible = value;
+    },
+    _setSwipeButtonSwitch(state, value) {
+        state._SwipeButtonSwitch = value;
     }
 };
 

@@ -2,10 +2,11 @@
     <div class="map-tools-view">
         <el-button-group>
             <el-button type="plain" @click="handleToolsClick" id="direct">行政区导航</el-button>
-            <el-button type="plain" @click="handleToolsClick" id="layers">图层管理</el-button>
+            <el-button type="plain" @click="handleToolsClick" id="layers">图层管理</el-button
+            ><el-button type="plain" @click="handleToolsClick" id="space">空间查询</el-button>
             <el-button type="plain" @click="handleToolsClick" id="distance">距离测量</el-button>
-            <el-button type="plain" @click="handleToolsClick" id="space">空间查询</el-button>
             <el-button type="plain" @click="handleToolsClick" id="area">面积测量</el-button>
+            <el-button type="plain" @click="handleToolsClick" id="swipe">卷帘分析</el-button>
             <el-button type="plain" @click="handleToolsClick" id="clear">清空</el-button>
         </el-button-group>
     </div>
@@ -38,8 +39,12 @@ export default {
                 case 'space':
                     this.spaceQuery();
                     break;
-                case 'clear':
+                case 'swipe':
                     console.log(e.currentTarget.id);
+                    this.$store.commit('_setSwipePannelVisible', true);
+                    break;
+                case 'clear':
+                    this.handleClear();
                     break;
                 default:
                     break;
@@ -224,6 +229,31 @@ export default {
             console.log(_self.geoData);
             return _self.geoData;
         },
+        async startSwipe() {
+            const _self = this;
+            const view = this.$store.getters._getDefaultView;
+            console.log(view);
+            const [Swipe] = await loadModules(['esri/widgets/Swipe'], options);
+            const layer1 = view.map.findLayerById('swipelayer1');
+            const layer2 = view.map.findLayerById('swipelayer2');
+            console.log(layer1);
+            console.log(layer2);
+            if (layer1 && layer2) {
+                _self.swipe = new Swipe({
+                    view: view,
+                    leadingLayers: [layer1],
+                    trailingLayers: [layer2],
+                    position: 50, // position set to middle of the view (50%)
+                });
+                view.ui.add(_self.swipe);
+            } else {
+                _self.$message({
+                    message: '请添加至少两张业务图层',
+                    type: 'warning',
+                });
+                return;
+            }
+        },
         treeSwitch() {
             let stat = this.$store.getters._getDefaultTreeStat;
             this.$store.commit('_setDefaultTreeStat', !stat);
@@ -231,6 +261,18 @@ export default {
         navSwitch() {
             let stat = this.$store.getters._getDefaultNavStat;
             this.$store.commit('_setDefaultNavStat', !stat);
+        },
+        handleClear() {
+            const view = this.$store.getters._getDefaultView;
+            const resLayer1 = view.map.findLayerById('polygonGraphicLayer');
+            const resLayer2 = view.map.findLayerById('layerid');
+            const layer1 = view.map.findLayerById('swipelayer1');
+            const layer2 = view.map.findLayerById('swipelayer2');
+            if (resLayer1) view.map.remove(resLayer1);
+            if (resLayer2) view.map.remove(resLayer2);
+            if (layer1) view.map.remove(layer1);
+            if (layer2) view.map.remove(layer2);
+            if (this.swipe) this.swipe.destroy();
         },
     },
 };
@@ -241,5 +283,6 @@ export default {
     position: absolute;
     right: 10px;
     top: 10px;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
 </style>

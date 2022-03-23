@@ -141,16 +141,19 @@ export default {
                                 },
                                 {
                                     id: 12,
-                                    LayerId: 'layerid',
-                                    label: '市级边界',
-                                    layerurl: 'http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetGray/MapServer',
+                                    LayerId: 'layer1',
+                                    label: '省级边界',
+                                    layerurl:
+                                        'http://localhost:8088/geoserver/geodata/ows?service=WFS&version=2.0.0&request=GetFeature',
+                                    name: 'sheng_Project',
                                 },
                                 {
                                     id: 13,
-                                    LayerId: 'layerid',
-                                    label: '县区边界',
+                                    LayerId: 'layer2',
+                                    label: '市级边界',
                                     layerurl:
-                                        'http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetPurplishBlue/MapServer',
+                                        'http://localhost:8088/geoserver/geodata/ows?service=WFS&version=2.0.0&request=GetFeature',
+                                    name: 'CNshiA_Dissolve1_Identity',
                                 },
                             ],
                         },

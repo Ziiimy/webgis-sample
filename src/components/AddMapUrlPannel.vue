@@ -27,7 +27,7 @@ export default {
     background-color: #fff;
 }
 .url-pannel {
-    position: absolute;
+    position: relative;
     left: 130px;
     bottom: 10px;
 }

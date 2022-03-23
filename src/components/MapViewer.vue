@@ -27,22 +27,34 @@ export default {
     methods: {
         //创建地图显示控件
         async _createMapView() {
-            const [Map, MapView, Basemap, TileLayer, BasemapToggle, ScaleBar, Zoom, Search, Compass, SketchViewModel] =
-                await loadModules(
-                    [
-                        'esri/Map',
-                        'esri/views/MapView',
-                        'esri/Basemap',
-                        'esri/layers/TileLayer',
-                        'esri/widgets/BasemapToggle',
-                        'esri/widgets/ScaleBar',
-                        'esri/widgets/Zoom',
-                        'esri/widgets/Search',
-                        'esri/widgets/Compass',
-                        'esri/widgets/Sketch/SketchViewModel',
-                    ],
-                    options,
-                );
+            const [
+                Map,
+                MapView,
+                Basemap,
+                TileLayer,
+                BasemapToggle,
+                ScaleBar,
+                Zoom,
+                Search,
+                Compass,
+                SketchViewModel,
+                Swipe,
+            ] = await loadModules(
+                [
+                    'esri/Map',
+                    'esri/views/MapView',
+                    'esri/Basemap',
+                    'esri/layers/TileLayer',
+                    'esri/widgets/BasemapToggle',
+                    'esri/widgets/ScaleBar',
+                    'esri/widgets/Zoom',
+                    'esri/widgets/Search',
+                    'esri/widgets/Compass',
+                    'esri/widgets/Sketch/SketchViewModel',
+                    'esri/widgets/Swipe',
+                ],
+                options,
+            );
 
             let basemap = new Basemap({
                 baseLayers: [
@@ -98,7 +110,9 @@ export default {
                 container: 'basemap-compass',
             });
             var sketchViewModel = new SketchViewModel({});
+            var swipe = new Swipe({});
             console.log(sketchViewModel);
+            console.log(swipe);
             mapview.ui.add(compass);
             map.add(this.$store.getters._getProvincewfslayer);
             this.$store.getters._getProvincewfslayer.visible = false;
@@ -137,6 +151,7 @@ export default {
     position: absolute;
     top: 10px;
     left: 10px;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
 #basemap-compass {
     position: absolute;
