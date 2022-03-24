@@ -1,6 +1,9 @@
 <template>
     <div class="map-tree" v-show="this.$store.getters._getDefaultTreeStat">
-        <el-input placeholder="搜索" v-model="filterText"> </el-input>
+        <div class="map-tree-header"><span>图层管理</span><i class="el-icon-close" @click="handleTreeStat"></i></div>
+        <div class="map-tree-search">
+            <el-input placeholder="搜索" v-model="filterText"> </el-input>
+        </div>
         <el-tree
             class="filter-tree"
             :data="data"
@@ -22,6 +25,10 @@ export default {
     name: 'MapTree',
     components: {},
     methods: {
+        handleTreeStat() {
+            let stat = this.$store.getters._getDefaultTreeStat;
+            this.$store.commit('_setDefaultTreeStat', !stat);
+        },
         async handleNodeClick(data) {
             if (data.id > 4 && data.id < 11) {
                 if (data.layerurl) {
@@ -141,7 +148,7 @@ export default {
                                 },
                                 {
                                     id: 12,
-                                    LayerId: 'layer1',
+                                    LayerId: 'layerid',
                                     label: '省级边界',
                                     layerurl:
                                         'http://localhost:8088/geoserver/geodata/ows?service=WFS&version=2.0.0&request=GetFeature',
@@ -149,7 +156,7 @@ export default {
                                 },
                                 {
                                     id: 13,
-                                    LayerId: 'layer2',
+                                    LayerId: 'layerid',
                                     label: '市级边界',
                                     layerurl:
                                         'http://localhost:8088/geoserver/geodata/ows?service=WFS&version=2.0.0&request=GetFeature',
@@ -172,7 +179,17 @@ export default {
 <style>
 .map-tree {
     position: absolute;
-    right: 10px;
-    top: 120px;
+    right: 100px;
+    top: 70px;
+    width: 200px;
+    background-color: #fff;
+}
+.map-tree-header {
+    padding: 5px;
+    background-color: #fff;
+}
+.map-tree-search {
+    width: 190px;
+    padding: 2px 5px;
 }
 </style>

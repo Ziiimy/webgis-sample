@@ -1,6 +1,8 @@
 <template>
     <div class="map-navigator" v-show="this.$store.getters._getDefaultNavStat">
-        <div class="map-navigator-header"><span>行政区导航</span></div>
+        <div class="map-navigator-header">
+            <span>行政区导航</span><i class="el-icon-close" @click="handleNavStat"></i>
+        </div>
         <div class="map-navigator-select">
             省份：
             <el-select v-model="provinceValue" placeholder="请选择" clearable v-on:change="handleSelectChange">
@@ -30,6 +32,10 @@ export default {
     components: {},
     methods: {
         //获取行政区划 省份数据
+        handleNavStat() {
+            let stat = this.$store.getters._getDefaultNavStat;
+            this.$store.commit('_setDefaultNavStat', !stat);
+        },
         async getProvinceData() {
             const _self = this;
             const [WFSLayer] = await loadModules(['esri/layers/WFSLayer']);
@@ -174,23 +180,31 @@ export default {
     width: 280px;
     height: 500px;
     background-color: #fff;
-    border-radius: 2px;
     padding: 10px;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
 .map-navigator-select {
+    position: absolute;
+    top: 50px;
     padding: 10px 0;
     width: 100%;
     height: 50px;
+    line-height: 35px;
+}
+.map-navigator-select > span {
+    line-height: 100px;
 }
 .map-navigator-header {
     border-bottom: 1px solid #f2f6fc;
     width: 300 px;
     height: 30px;
-    padding: 5px;
+    padding: 0 5px;
     box-sizing: border-box;
     display: flex;
     justify-content: space-between;
+}
+.map-navigator-header > i {
+    padding: 5px 5px;
 }
 .city-item {
     font-size: 12px;
@@ -208,8 +222,5 @@ export default {
     overflow: auto;
     padding: 0 5px;
     box-sizing: border-box;
-}
-body {
-    margin: 0;
 }
 </style>

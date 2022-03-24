@@ -7,6 +7,7 @@
             <el-button type="plain" @click="handleToolsClick" id="distance">距离测量</el-button>
             <el-button type="plain" @click="handleToolsClick" id="area">面积测量</el-button>
             <el-button type="plain" @click="handleToolsClick" id="swipe">卷帘分析</el-button>
+            <el-button type="plain" @click="handleToolsClick" id="print">地图打印</el-button>
             <el-button type="plain" @click="handleToolsClick" id="clear">清空</el-button>
         </el-button-group>
     </div>
@@ -33,21 +34,132 @@ export default {
                     this.treeSwitch();
                     break;
                 case 'distance':
+                    this.startMeasure('distance');
                     break;
                 case 'area':
+                    this.startMeasure('area');
                     break;
                 case 'space':
                     this.spaceQuery();
                     break;
                 case 'swipe':
-                    console.log(e.currentTarget.id);
                     this.$store.commit('_setSwipePannelVisible', true);
+                    break;
+                case 'print':
+                    this.handlePrint();
                     break;
                 case 'clear':
                     this.handleClear();
                     break;
                 default:
                     break;
+            }
+        },
+        async startMeasure(measureType) {
+            const _self = this;
+            const view = _self.$store.getters._getDefaultView;
+            const resultLayer = view.map.findLayerById('measureGraphicLayer');
+            if (resultLayer) view.map.remove(resultLayer);
+            const [GraphicsLayer, SketchViewModel, GeometryService, LengthsParameters, AreasAndLengthsParameters] =
+                await loadModules(
+                    [
+                        'esri/layers/GraphicsLayer',
+                        'esri/widgets/Sketch/SketchViewModel',
+                        'esri/tasks/GeometryService',
+                        'esri/tasks/support/LengthsParameters',
+                        'esri/tasks/support/AreasAndLengthsParameters',
+                    ],
+                    options,
+                );
+            const measureLayer = new GraphicsLayer({
+                id: 'measureGraphicLayer',
+                elevationInfo: {
+                    mode: 'on-the-ground',
+                },
+            });
+            view.map.add(measureLayer);
+            if (measureType === 'distance') {
+                const polylineSymbol = {
+                    type: 'simple-line',
+                    color: '#FF4500',
+                    width: '2',
+                    style: 'solid',
+                };
+                const sketchViewModel = new SketchViewModel({
+                    updateOnGraphicClick: false,
+                    view,
+                    layer: measureLayer,
+                    polylineSymbol,
+                });
+                sketchViewModel.create('polyline');
+                sketchViewModel.on('create', function (event) {
+                    if (event.state === 'complete') {
+                        //获取线段长度
+                        const geometryService = new GeometryService({
+                            url: 'http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/Geometry/GeometryServer',
+                        });
+
+                        const lengthsParameters = new LengthsParameters();
+                        lengthsParameters.polylines = event.graphic.geometry;
+                        lengthsParameters.lengthUnit = 9001;
+                        lengthsParameters.geodesic = true;
+
+                        geometryService.lengths(lengthsParameters).then(function (result) {
+                            console.log('长度', result);
+                            _self.$notify.info({
+                                title: '测量结果',
+                                message: `距离：${result.lengths[0].toFixed(2)}米`,
+                                duration: 0,
+                                type: 'success',
+                                offset: 220,
+                            });
+                        });
+                    }
+                });
+            } else if (measureType == 'area') {
+                const polygonSymbol = {
+                    type: 'simple-fill',
+                    color: [245, 108, 108, 0.2],
+                    style: 'solid',
+                    outline: {
+                        color: '#d81e06',
+                        width: 1,
+                    },
+                };
+                const sketchViewModel = new SketchViewModel({
+                    updateOnGraphicClick: false,
+                    view,
+                    layer: measureLayer,
+                    polygonSymbol,
+                });
+                console.log(measureLayer);
+                sketchViewModel.create('polygon');
+                sketchViewModel.on('create', function (event) {
+                    if (event.state === 'complete') {
+                        console.log(event);
+                        const geometryService = new GeometryService({
+                            url: 'http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/Geometry/GeometryServer',
+                        });
+
+                        const areasAndLengthsParameters = new AreasAndLengthsParameters();
+                        areasAndLengthsParameters.polygons = event.graphic.geometry;
+                        areasAndLengthsParameters.areaUnit = 'square-kilometers';
+                        areasAndLengthsParameters.lengthUnit = 'kilometers';
+
+                        geometryService.areasAndLengths(areasAndLengthsParameters).then(function (result) {
+                            console.log('面积和周长', result);
+                            _self.$notify.info({
+                                title: '测量结果',
+                                message:
+                                    `周长：${result.areas[0].toFixed(2)}米` +
+                                    `\n` +
+                                    `面积：${result.lengths[0].toFixed(2)}平方千米`,
+                                duration: 0,
+                                offset: 220,
+                            });
+                        });
+                    }
+                });
             }
         },
         async spaceQuery() {
@@ -254,6 +366,41 @@ export default {
                 return;
             }
         },
+        async handlePrint() {
+            const _self = this;
+            const view = _self.$store.getters._getDefaultView;
+            const [PrintTask, PrintTemplate, PrintParameters] = await loadModules(
+                ['esri/tasks/PrintTask', 'esri/tasks/support/PrintTemplate', 'esri/tasks/support/PrintParameters'],
+                options,
+            );
+            let printTask = new PrintTask({
+                url: 'https://utility.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task',
+            });
+
+            let template = new PrintTemplate({
+                format: 'pdf',
+                exportOptions: {
+                    dpi: 300,
+                },
+                layout: 'a4-landscape',
+                layoutOptions: {
+                    titleText: 'XXX地图',
+                    authorText: 'zhoujm',
+                },
+                forceFeatureAttributes: true,
+            });
+
+            let params = new PrintParameters({
+                view: view,
+                template: template,
+            });
+
+            printTask.execute(params).then((printResult, printError) => {
+                console.log(printResult, printError);
+                if (printResult.url) window.open(printResult.url);
+                if (printError) this.$message.error('地图打印失败，请重试');
+            });
+        },
         treeSwitch() {
             let stat = this.$store.getters._getDefaultTreeStat;
             this.$store.commit('_setDefaultTreeStat', !stat);
@@ -268,11 +415,14 @@ export default {
             const resLayer2 = view.map.findLayerById('layerid');
             const layer1 = view.map.findLayerById('swipelayer1');
             const layer2 = view.map.findLayerById('swipelayer2');
+            const spaceQueryLayer = view.map.findLayerById('initResultLayer');
             if (resLayer1) view.map.remove(resLayer1);
             if (resLayer2) view.map.remove(resLayer2);
             if (layer1) view.map.remove(layer1);
             if (layer2) view.map.remove(layer2);
+            if (spaceQueryLayer) view.map.remove(spaceQueryLayer);
             if (this.swipe) this.swipe.destroy();
+            this.$store.commit('_setSpaceQueryVisible', false);
         },
     },
 };
@@ -284,5 +434,16 @@ export default {
     right: 10px;
     top: 10px;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+}
+.measure-results-table {
+    position: absolute;
+    width: 180px;
+    height: 80px;
+    right: 100px;
+    top: 60px;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    padding: 10px 10px;
+    white-space: pre-wrap;
 }
 </style>

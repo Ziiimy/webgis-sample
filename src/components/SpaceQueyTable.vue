@@ -71,17 +71,18 @@ export default {
     font-weight: 600;
     color: #909399;
 }
+.space-query-header > i {
+    line-height: 35px;
+}
 .el-icon-minus {
     position: absolute;
     right: 50px;
-    line-height: 35px;
     cursor: pointer;
     color: #909399;
 }
 .el-icon-close {
     position: absolute;
     right: 10px;
-    line-height: 35px;
     cursor: pointer;
     color: #909399;
 }

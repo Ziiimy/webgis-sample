@@ -13,12 +13,12 @@
                     </div>
                     <el-collapse-transition>
                         <div class="input-pannel" v-show="show">
-                            <div class="el-input">
+                            <div id="el-input" class="el-input">
                                 <el-input placeholder="请输入图一链接" v-model="input1">
                                     <el-button slot="append" @click="_handleClick" id="1">获取地图</el-button>
                                 </el-input>
                             </div>
-                            <div class="el-input">
+                            <div id="el-input" class="el-input">
                                 <el-input placeholder="请输入图二链接" v-model="input2">
                                     <el-button slot="append" @click="_handleClick" id="2">获取地图 </el-button>
                                 </el-input>
@@ -153,7 +153,7 @@ export default {
     height: 100%;
     box-sizing: border-box;
 }
-.el-input {
+#el-input {
     width: 280px;
     height: 15px;
     padding: 0 2px;
@@ -161,6 +161,7 @@ export default {
 .input-pannel {
     height: 50px;
     width: 570px;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
 .pannel-header {
     line-height: 35px;

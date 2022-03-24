@@ -20,15 +20,4 @@ export default {
 </script>
 
 <style>
-.el-select .el-input {
-    width: 130px;
-}
-.input-with-select .el-input-group__prepend {
-    background-color: #fff;
-}
-.url-pannel {
-    position: relative;
-    left: 130px;
-    bottom: 10px;
-}
 </style>
