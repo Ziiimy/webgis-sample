@@ -7,6 +7,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import router from './router/router';
 import store from './store/'
 
+
 Vue.config.productionTip = false
 Vue.use(ElementUI);
 Vue.component(CollapseTransition.name, CollapseTransition)

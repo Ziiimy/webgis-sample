@@ -2,8 +2,8 @@
     <div class="map-tools-view">
         <el-button-group>
             <el-button type="plain" @click="handleToolsClick" id="direct">行政区导航</el-button>
-            <el-button type="plain" @click="handleToolsClick" id="layers">图层管理</el-button
-            ><el-button type="plain" @click="handleToolsClick" id="space">空间查询</el-button>
+            <el-button type="plain" @click="handleToolsClick" id="layers">图层管理</el-button>
+            <el-button type="plain" @click="handleToolsClick" id="space">空间查询</el-button>
             <el-button type="plain" @click="handleToolsClick" id="distance">距离测量</el-button>
             <el-button type="plain" @click="handleToolsClick" id="area">面积测量</el-button>
             <el-button type="plain" @click="handleToolsClick" id="swipe">卷帘分析</el-button>

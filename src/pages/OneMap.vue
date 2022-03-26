@@ -1,7 +1,7 @@
 <template>
     <div class="map-page">
         <MapView />
-        <MapTools ref="childContainer"></MapTools>
+        <MapTools ref="MapTools"></MapTools>
         <MapTree /><MapNav /><SpaceQuery />
         <SwipeMapPannel @startSwipe="startSwipe"> </SwipeMapPannel>
     </div>
@@ -20,7 +20,7 @@ export default {
     components: { MapView, MapTools, MapTree, MapNav, SpaceQuery, SwipeMapPannel },
     methods: {
         startSwipe() {
-            this.$refs.childContainer.startSwipe();
+            this.$refs.MapTools.startSwipe();
         },
     },
 };
