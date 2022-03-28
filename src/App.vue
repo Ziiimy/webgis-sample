@@ -8,7 +8,6 @@
                     <span @click="handleLoginPannel">{{ userStatus }}</span>
                 </div>
             </el-header>
-
             <el-container class="app-contentpannel">
                 <el-aside class="app-aside" width="120px">
                     <el-menu class="app-menu-vertical" mode="vertical" @select="HandleMenuSelect">
