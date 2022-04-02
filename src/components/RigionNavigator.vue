@@ -190,6 +190,7 @@ export default {
     width: 100%;
     height: 50px;
     line-height: 35px;
+    box-sizing: border-box;
 }
 .map-navigator-select > span {
     line-height: 100px;
@@ -210,6 +211,7 @@ export default {
     font-size: 12px;
     color: #5f6477;
     font-weight: 600;
+    margin: 0 10px 5px 0;
     cursor: pointer;
 }
 .map-navigator-pannel tr {
@@ -217,10 +219,12 @@ export default {
     margin-bottom: 15px; /*设置tr间距为15px*/
 }
 .map-navigator-pannel {
-    width: 100%;
+    width: 285px;
     height: 400px;
     overflow: auto;
     padding: 0 5px;
     box-sizing: border-box;
+    top: 110px;
+    position: absolute;
 }
 </style>
