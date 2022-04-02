@@ -56,7 +56,7 @@ export default {
 
                 case '2': {
                     const mapview2 = this.$store.getters._getCompareMapview2;
-                    this._handleMapUrl(mapview2, this.input1);
+                    this._handleMapUrl(mapview2, this.input2);
                     break;
                 }
             }
